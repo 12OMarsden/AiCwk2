@@ -593,7 +593,8 @@ def genSyntheticTrainSet():
     data = None
 
     #insert code here
-
+    data = SyntheticRestaurant(200)
+    
 
     return(data)
 
@@ -604,7 +605,8 @@ def genSyntheticTestSet():
     data = None
 
     #insert code here
-
+    
+    data = SyntheticRestaurantTest(100)
 
     return (data)
 
@@ -621,8 +623,17 @@ def train_restaurant_tree(trainSet, testSet, N=200):
 
 
     #insert code here
-
-
+    
+    tree = DecisionTreeLearner(trainSet)  
+    error = err_ratio(tree, testSet)
+    for x in range(1, N):
+        tempTestSet, tempTrainSet  = train_test_split(trainSet, start=0, end=x)
+        tempTree = DecisionTreeLearner(tempTrainSet)        
+        tempError = err_ratio(tempTree, testSet)
+        if(error == tempError):
+            samples_required = x -1
+            break
+    print(samples_required)
     return(tree,samples_required)
 
 #TASK 3d
@@ -635,6 +646,8 @@ def train_tree(trainSet, testSet):
 
     #insert code here
 
+    tree = DecisionTreeLearner(trainSet)  
+    error = err_ratio(tree, testSet)
 
     return(tree,error)
 
