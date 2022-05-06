@@ -149,8 +149,7 @@ def train_test_split(dataset, start=None, end=None, test_split=None):
 
 
 
-
-
+# to get a value for predict
 def PluralityLearner(dataset):
     """
     A very dumb algorithm: always pick the result that was most popular
@@ -554,9 +553,9 @@ def learn_tennis_tree(filename):
     dataSet = None
     tree = None
 
-
-    #insert code here
-
+    #insert code here   
+    dataSet = DataSet(name=filename, target='Play')
+    tree = DecisionTreeLearner(dataSet)
 
     return(dataSet,tree)
 
@@ -573,8 +572,18 @@ def test_tennis_tree(filename):
     tree = None
     error = 0
 
-    #insert code here
+    #insert code here    
+    
+    ## function should split the data provided by filename into a traing and test set.
+    trainSet, testSet = train_test_split(DataSet(name=filename), test_split=0.2)
+    
+    ## learn a decision tree from the training set
+    tree = DecisionTreeLearner(trainSet)
 
+    ## test the tree on the test and evaluate its performance
+    error = err_ratio(tree, testSet)    
+
+    ## returns a the training and test sets, the decion tree and the error rate achieved.
     return(trainSet,testSet,tree,error)
 
 # TASK 3a
