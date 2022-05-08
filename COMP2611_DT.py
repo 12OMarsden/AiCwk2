@@ -319,12 +319,18 @@ def deviation(value,parent_pos,parent_neg):
     ##actula counts at its parents are parent.pos and parent.neg
     ##function must return the sqaured difference between the actual and expected counts.
     deviation = 0
+    childPos = value.pos
+    childNeg = value.neg
 
     if(value.pos == 0 and value.neg == 0):
         return 0
 
-    #Insert code here
+    proportion = (childPos + childNeg)/(parent_pos + parent_neg)
 
+    expectedPos = parent_pos * proportion
+    expectedNeg = parent_neg * proportion
+
+    deviation = (((expectedPos - childPos) **2) / expectedPos) + (((expectedNeg - childNeg) **2) / expectedNeg)
 
     return (deviation)
 
@@ -408,7 +414,7 @@ def evaluate(predict,dataset, examples = None):
                 #calculate p_value using the stats.chi2.cdf function.
                 #The degree of freedom (num of variable) is the number of branches at the parent.
 
-
+                p_value = 1 - stats.chi2.cdf(DELTA, len(parent.branches))
 
                 print("chisquare-score is:", DELTA, " and p value is:", p_value)
 
@@ -655,7 +661,7 @@ def train_tree(trainSet, testSet):
 def genPruneTestSet():
     ##function generates a synthetic data set using the SytheticRestaruantPruneTest method
     ##returns the dataset created
-    data = None
+    data = SyntheticRestaurantPruneTest(1000)
 
     #insert code here
 
@@ -672,7 +678,8 @@ def prune_tree(tree,testSet):
     delta = 1.0
 
     #insert code here
-
+    p_value, delta, error_rate = evaluate(tree, testSet)
+    clear_counts(tree)
 
     return(testSet,p_value,delta,tree,error_rate)
 
